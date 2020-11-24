@@ -2,6 +2,7 @@
 html,
 body {
   height: 100%;
+  /* 高度100%，在移动端可以代表着拿到了设备的高度*/
   overflow: hidden;
 }
 html,
@@ -44,10 +45,27 @@ img {
 #wrap {
   font-size: 0.23703704rem;
   height: 100%;
-  /* 高度100% + overflow:hidden，不要出现系统滚动条*/
+  /* 高度100%，在移动端可以代表着拿到了设备的高度*/
   overflow: hidden;
+  /* overflow:hidden，不要出现系统滚动条*/
   background-color: #EEEEEE;
+  position: relative;
+}
+#wrap .head {
+  position: absolute;
   width: 100%;
+  background-color: #232323;
+  height: 4rem;
+}
+#wrap .head .head-top {
+  height: 2rem;
+}
+#wrap .head .head-top .logo {
+  float: left;
+  padding: 0.38518519rem 0.25185185rem 0.31111111rem 0.25185185rem;
+}
+#wrap .head .head-top .logo img {
+  width: 3.55555556rem;
 }
 /* head - start */
 /* head - end */
