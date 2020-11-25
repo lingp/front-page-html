@@ -2,23 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
     <title>音乐台</title>
     <link rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
-    <div id="wrap">
-        <div class="head">
-            <div class="head-top">
-                <a class="logo" href="javascript:;">
-                    <img src="img/logo.png">
-                </a>
-            </div>
-            <div class="head-bottom">
-
+<div id="wrap">
+    <div class="head">
+        <div class="head-top">
+            <!--    LOGO   -->
+            <a class="logo" href="javascript:;">
+                <img src="img/logo.png">
+            </a>
+            <!--   菜单按钮  -->
+            <a class="menu-button" href="javascript:;">
+            </a>
+            <!--  按钮排 -->
+            <div class="btns">
+                <a href="javascript:;" class="seatch-btn">搜索</a>
+                <a href="javascript:;" class="login-btn">登录</a>
+                <a href="javascript:;" class="register-btn">注册</a>
             </div>
         </div>
+        <div class="head-bottom">
+            <!--     搜索框       -->
+            <form>
+                <input type="text" name="search-content" class="search-input" placeholder="请点击">
+                <input type="submit" class="search-sub" name="查询" >
+            </form>
+        </div>
+        <ul class="menu">
+            <li>首页</li>
+            <li>MV</li>
+            <li>悦单</li>
+            <li>V版</li>
+
+            <li>音乐</li>
+            <li>商城</li>
+            <li>节目</li>
+            <li>饭店</li>
+
+            <li>咨询</li>
+            <li>我的家</li>
+            <li>APP下载</li>
+            <li>热门应用</li>
+        </ul>
     </div>
+</div>
 </body>
 <script src="js/init.js" type="application/javascript"></script>
 </html>
