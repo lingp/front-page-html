@@ -105,6 +105,9 @@
                 </li>
             </ul>
         </div>
+        <div class="carousel-wrap" needCarousel needAuto>
+            <div class="points-wrap"></div>
+        </div>
     </div>
 </div>
 </body>
@@ -299,6 +302,13 @@
                 }
             })
 
+        }
+
+        //无缝滑屏
+        swiper();
+        function swiper(){
+            var arr=["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg","img/5.jpg"]
+            component.carousel(arr);
         }
     }
 </script>
