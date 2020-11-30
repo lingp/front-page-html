@@ -29,7 +29,7 @@
             <!--     搜索框       -->
             <form>
                 <input type="text" name="search-content" class="search-input" placeholder="请点击">
-                <input type="submit" class="search-sub" name="查询" >
+                <input type="submit" class="search-sub" name="查询">
             </form>
         </div>
         <ul class="menu">
@@ -49,7 +49,155 @@
             <li>热门应用</li>
         </ul>
     </div>
+    <div class="content">
+        <div class="nav">
+            <ul class="list">
+                <li class="active">
+                    <a href="javascript:;">首页</a>
+                </li>
+                <li>
+                    <a href="javascript:;">MV</a>
+                </li>
+                <li>
+                    <a href="javascript:;">悦单</a>
+                </li>
+                <li>
+                    <a href="javascript:;">V版</a>
+                </li>
+                <li>
+                    <a href="javascript:;">音乐</a>
+                </li>
+                <li>
+                    <a href="javascript:;">商城</a>
+                </li>
+                <li>
+                    <a href="javascript:;">节目</a>
+                </li>
+                <li>
+                    <a href="javascript:;">饭店</a>
+                </li>
+                <li>
+                    <a href="javascript:;">咨询</a>
+                </li>
+                <li>
+                    <a href="javascript:;">我的家</a>
+                </li>
+                <li>
+                    <a href="javascript:;">APP下载</a>
+                </li>
+                <li>
+                    <a href="javascript:;">热门应用</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
-<script src="js/init.js" type="application/javascript"></script>
+<script src="js/tools.js" type="application/javascript"></script>
+<script src="js/component.js" type="application/javascript"></script>
+<script>
+    window.onload = function () {
+
+        // 禁止所有默认触摸事件，ps:PC的谷歌浏览器不支持，但真机可以
+        document.addEventListener('touchstart', function (e) {
+            e = e || event;
+            e.preventDefault();
+        })
+
+        // rem适配
+        ;(function () {
+            let styleNode = document.createElement("style");
+            console.log("w");
+            let w = document.documentElement.clientWidth / 16;
+            console.log(w);
+            styleNode.innerHTML = "html{font-size:" + w + "px!important}";
+            document.head.append(styleNode)
+        })();
+
+        // 点击菜单按钮
+        clickMenuBtn();
+        function clickMenuBtn() {
+            let btnObj = document.querySelector("#wrap .head .head-top .menu-button");
+            let menuObj = document.querySelector("#wrap .head .menu");
+
+            let isActive = false;
+            // 点击菜单按钮
+            btnObj.addEventListener('touchstart', function (e) {
+                e = e || event;
+                let touch = e.changedTouches[0];
+                if (!isActive) {
+                    tools.addClass(btnObj, 'active');
+                    menuObj.style.display = 'block'
+                } else {
+                    tools.removeClass(btnObj, 'active');
+                    menuObj.style.display = 'none'
+                }
+                isActive = !isActive;
+                e.stopPropagation();
+                e.preventDefault()
+            });
+            // 点击除弹出的菜单的以外的区域，关闭菜单
+            document.addEventListener('touchstart', function (e) {
+                e = e || event;
+                if (isActive) {
+                    tools.removeClass(btnObj, 'active');
+                    menuObj.style.display = 'none';
+                    isActive = !isActive; // 这里记得要置成false
+                }
+
+            });
+            // 点击菜单区域，不关闭菜单
+            menuObj.addEventListener('touchstart', function (e) {
+                e = e || event;
+                e.stopPropagation();
+                e.preventDefault();
+            })
+        }
+
+        // 搜索框获取焦点
+        searchInputFoucs();
+        function searchInputFoucs() {
+            let searchInputObj = document.querySelector('#wrap .head .head-bottom form .search-input');
+            searchInputObj.addEventListener('touchstart', function (e) {
+                e = e || event;
+                this.focus();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            document.addEventListener('touchstart', function (e) {
+                searchInputObj.blur();
+            })
+        }
+
+        // 拖拽
+        navDrag();
+        function navDrag() {
+           // 滑屏区域
+           let wrapObj = document.querySelector('#wrap .content .nav');
+           // 滑动元素
+           let urlObj = document.querySelector('#wrap .content .nav .list');
+
+           // 元素一开始的位置
+           let startX = 0; // 手指触摸的位置
+           let elementX = 0; // 滑动元素的位置
+
+           wrapObj.addEventListener('touchstart', function (ev) {
+                ev = ev || event;
+                let touchC = ev.changedTouches[0];
+
+                startX = touchC.clientX;
+                elementX = component.toTransform(urlObj, 'translateX')
+           });
+
+           wrapObj.addEventListener('touchmove', function (ev) {
+               ev = ev || event;
+               let touchC = ev.changedTouches[0];
+               let nowX = touchC.clientX;
+               let disX = nowX-startX;
+               component.toTransform(urlObj, 'translateX', elementX + disX)
+           })
+
+        }
+    }
+</script>
 </html>

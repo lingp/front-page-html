@@ -136,7 +136,7 @@ img {
     }
 
     .menu {
-      .1-px(deeppink);
+      .1-px(top,deeppink);
       position: absolute;
       width: 100%;
       top: 135/@rem;
@@ -154,6 +154,53 @@ img {
         text-align: center;
       }
     }
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: deeppink;
+    // content容器把父容器剩下的内容填满
+    top: 270/@rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .nav {
+      box-sizing: border-box;
+      padding: 31/@rem 0 14px/@rem 0;
+      .1-px(bottom);
+      background: #EEEEEE;
+      height: 177/@rem;
+      width: 100%;
+      .list {
+          //取消掉行内元素的空白
+          font-size: 0;
+          //不换行
+          white-space: nowrap;
+          //ul可以被li撑开宽度
+          float: left;
+          & > li {
+            //float: left; // 这里不能float了，不然不会撑开ul
+            height: 129/@rem;
+            padding: 0 38/@rem;
+            line-height: 129/@rem;
+            font-size: 1rem;
+            display: inline-block;
+            a{// a标签有自己的样式，字体颜色不能放在li，不然不生效
+              color: #020202;
+            }
+            &.active {
+              background-color: #690;
+              a{
+                color: #fff;
+              }
+            }
+          }
+      }
+    }
+
+
   }
 }
 
