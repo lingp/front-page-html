@@ -181,6 +181,12 @@
            let startX = 0; // 手指触摸的位置
            let elementX = 0; // 滑动元素的位置
 
+           // 这个代表左移时，移到多少，看到最右边的元算
+           let minX = wrapObj.clientWidth - urlObj.offsetWidth;
+
+            // 要移动的距离
+            let translateX = 0;
+
            wrapObj.addEventListener('touchstart', function (ev) {
                 ev = ev || event;
                 let touchC = ev.changedTouches[0];
@@ -189,13 +195,41 @@
                 elementX = component.toTransform(urlObj, 'translateX')
            });
 
-           wrapObj.addEventListener('touchmove', function (ev) {
-               ev = ev || event;
-               let touchC = ev.changedTouches[0];
-               let nowX = touchC.clientX;
-               let disX = nowX-startX;
-               component.toTransform(urlObj, 'translateX', elementX + disX)
-           })
+            wrapObj.addEventListener('touchmove', function (ev) {
+                ev = ev || event;
+                let touchC = ev.changedTouches[0];
+                let nowX = touchC.clientX;
+                let disX = nowX - startX;
+                translateX = elementX + disX;
+
+                /**
+                 * 橡皮筋效果
+                 * 在move的过程中，每一次touchmove真正的有效距离慢慢变小，元素的滑动距离还是在变大
+                 */
+                if (translateX > 0) {
+                    let scale = document.documentElement.clientWidth / ((document.documentElement.clientWidth + translateX) * 1.5);
+                    translateX = elementX + disX * scale;
+                } else if (translateX < minX) {
+                    let over = minX - translateX;
+                    let scale = document.documentElement.clientWidth / ((document.documentElement.clientWidth + over) * 1.5);
+                    translateX = elementX + disX * scale;
+                }
+
+                component.toTransform(urlObj, 'translateX', translateX)
+            });
+
+            wrapObj.addEventListener('touchend', function (ev) {
+                ev = ev || event;
+                translateX =  component.toTransform(urlObj, 'translateX');
+
+                if (translateX>=0) {
+                    translateX = 0;
+                } else if (translateX <=minX) {
+                    translateX = minX
+                }
+                urlObj.style.transition = '1s transform';
+                component.toTransform(urlObj, 'translateX', translateX)
+            })
 
         }
     }
