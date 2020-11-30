@@ -88,6 +88,21 @@
                 <li>
                     <a href="javascript:;">热门应用</a>
                 </li>
+                <li>
+                    <a href="javascript:;">晓飞张</a>
+                </li>
+                <li>
+                    <a href="javascript:;">金龙油</a>
+                </li>
+                <li>
+                    <a href="javascript:;">邱海峰</a>
+                </li>
+                <li>
+                    <a href="javascript:;">小贱贱</a>
+                </li>
+                <li>
+                    <a href="javascript:;">你</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -187,12 +202,26 @@
             // 要移动的距离
             let translateX = 0;
 
+            // 快速滑屏的必要参数
+            let lastTime = 0; // 上个时间点
+            let lastPoint = 0; // 上个位置
+            let timeDis = 0; // 时间间隔
+            let pointDis = 0; // 两个点的距离
+
            wrapObj.addEventListener('touchstart', function (ev) {
                 ev = ev || event;
                 let touchC = ev.changedTouches[0];
 
                 startX = touchC.clientX;
-                elementX = component.toTransform(urlObj, 'translateX')
+                elementX = component.toTransform(urlObj, 'translateX');
+
+               lastTime = new Date().getTime();
+               lastPoint = component.toTransform(urlObj, 'translateX');
+
+               //清除速度的残留
+               pointDis=0;
+               timeDis = 0;
+
            });
 
             wrapObj.addEventListener('touchmove', function (ev) {
@@ -215,20 +244,38 @@
                     translateX = elementX + disX * scale;
                 }
 
-                component.toTransform(urlObj, 'translateX', translateX)
+                component.toTransform(urlObj, 'translateX', translateX);
+
+                let nowTime = new Date().getTime();
+                let nowPoint = component.toTransform(urlObj, 'translateX');
+                timeDis = nowTime - lastTime;
+                pointDis = nowPoint - lastPoint;
             });
 
             wrapObj.addEventListener('touchend', function (ev) {
                 ev = ev || event;
-                translateX =  component.toTransform(urlObj, 'translateX');
+                // translateX =  component.toTransform(urlObj, 'translateX');
 
-                if (translateX>=0) {
-                    translateX = 0;
-                } else if (translateX <=minX) {
-                    translateX = minX
+                //速度越大  位移越远 (快速滑屏幕)
+                let speed = pointDis/timeDis;
+                speed = Math.abs(speed) < 0.5 ? 0 : speed;
+
+                let targetX = translateX + speed*200;
+
+                let time = Math.abs(speed) * 0.2;
+                time = time < 0.8 ? 0.8 : time;
+                time = time > 2 ? 2 : time;
+                // 快速滑屏橡皮筋效果
+                let bsr = '';
+                if (targetX >= 0) {
+                    targetX = 0;
+                    bsr = "cubic-bezier(.26,1.51,.68,1.54) "
+                } else if (targetX <= minX) {
+                    targetX = minX;
+                    bsr = "cubic-bezier(.26,1.51,.68,1.54) "
                 }
-                urlObj.style.transition = '1s transform';
-                component.toTransform(urlObj, 'translateX', translateX)
+                urlObj.style.transition = time+"s "+bsr+" transform";
+                component.toTransform(urlObj, 'translateX', targetX)
             })
 
         }
