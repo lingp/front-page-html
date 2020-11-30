@@ -12,7 +12,7 @@
             node['transform'] = {};
         }
 
-        if (arguments.length == 3) {
+        if (arguments.length === 3) {
             let tValue = '';
             node['transform'][type] = val;
             for (item in node['transform']) {
@@ -32,7 +32,7 @@
                 }
             }
             node.style.transform = node.style.webkitTransform = tValue;
-        } else if (arguments.length == 2) {
+        } else if (arguments.length === 2) {
             //读取
             val =node["transform"][type];
             if(typeof val === "undefined"){
